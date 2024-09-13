@@ -6,7 +6,6 @@ import { setSelectedUser } from '../redux/userSlice';
 
 const MessageContainer = () => {
     const { selectedUser, authUser, onlineUsers } = useSelector(store => store.user);
-    const dispatch = useDispatch();
 
     const isOnline = onlineUsers?.includes(selectedUser?._id);
    
