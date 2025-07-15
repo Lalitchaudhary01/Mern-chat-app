@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import axios from '../api/axios'; // ✅ Use custom instance
 import { toast } from 'react-hot-toast';
 
 
@@ -22,7 +22,7 @@ const Signup = () => {
     const onSubmitHandler = async (e) => {
         e.preventDefault()
         try{
-          const res = await axios.post('http://localhost:8080/api/v1/user/register', user, {
+          const res = await axios.post('/api/v1/user/register', user, {
             
             headers: {
               'Content-Type': 'application/json',

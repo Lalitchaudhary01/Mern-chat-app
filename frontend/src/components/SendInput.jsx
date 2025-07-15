@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { IoSend } from "react-icons/io5";
-import axios from "axios";
+import axios from "../api/axios"; // ✅ use custom axios instance
 import { useDispatch, useSelector } from "react-redux";
 import { setMessages } from "../redux/messageSlice";
 
@@ -25,7 +25,6 @@ const SendInput = () => {
     setIsTranslating(true);
 
     try {
-      // Try LibreTranslate first (better CORS support)
       const libreRes = await axios.post(
         "https://libretranslate.de/translate",
         {
@@ -49,7 +48,6 @@ const SendInput = () => {
     } catch (libreError) {
       console.log("Primary translation failed, trying backup...");
 
-      // Fallback to MyMemory with CORS proxy
       try {
         const proxyUrl = "https://cors-anywhere.herokuapp.com/";
         const memoryRes = await axios.get(
@@ -75,11 +73,10 @@ const SendInput = () => {
   const sendMessage = async (messageToSend) => {
     try {
       const res = await axios.post(
-        `http://localhost:8080/api/v1/message/send/${selectedUser?._id}`,
+        `/api/v1/message/send/${selectedUser?._id}`,
         { message: messageToSend },
         {
           headers: { "Content-Type": "application/json" },
-          withCredentials: true,
         }
       );
 
@@ -95,7 +92,6 @@ const SendInput = () => {
     e.preventDefault();
     if (!message.trim()) return;
 
-    // Always translate to selected language before sending
     const translatedText = await translateText(message, language);
     await sendMessage(translatedText);
   };
