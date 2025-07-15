@@ -1,5 +1,6 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import axios from "../api/axios"; // ✅ use custom axios instance
+
 import { useDispatch } from "react-redux";
 import { setOtherUsers } from "../redux/userSlice";
 
@@ -9,14 +10,15 @@ const useGetOtherUsers = () => {
   useEffect(() => {
     const fetchOtherUsers = async () => {
       try {
-        const res = await axios.get(`/api/v1/user/`);
-        console.log(res);
+        axios.defaults.withCredentials = true;
+        const res = await axios.get(`/api/v1/user`);
+        // store
+        console.log("other users -> ", res);
         dispatch(setOtherUsers(res.data));
       } catch (error) {
         console.log(error);
       }
     };
-
     fetchOtherUsers();
   }, []);
 };

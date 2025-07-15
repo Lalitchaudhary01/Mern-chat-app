@@ -11,6 +11,7 @@ export const register = async (req, res) => {
     if (password !== confirmPassword) {
       return res.status(400).json({ message: "Password do not match" });
     }
+
     const user = await User.findOne({ username });
     if (user) {
       return res
@@ -19,7 +20,7 @@ export const register = async (req, res) => {
     }
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    //profile photo
+    // profilePhoto
     const maleProfilePhoto = `https://avatar.iran.liara.run/public/boy?username=${username}`;
     const femaleProfilePhoto = `https://avatar.iran.liara.run/public/girl?username=${username}`;
 
@@ -62,7 +63,7 @@ export const login = async (req, res) => {
       userId: user._id,
     };
 
-    const token = jwt.sign(tokenData, process.env.JWT_SECRET_KEY, {
+    const token = await jwt.sign(tokenData, process.env.JWT_SECRET_KEY, {
       expiresIn: "1d",
     });
 
