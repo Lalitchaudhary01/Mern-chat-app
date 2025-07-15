@@ -17,7 +17,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
 const corsOption = {
-  origin: "http://localhost:3001",
+  origin: process.env.FRONTEND_URL,
   credentials: true,
   optionSuccessStatus: 200,
 };
